@@ -20,6 +20,11 @@ class ShoppingController extends GetxController {
   void calcularTotal() {
     int newTotal = 0;
     // TODO
+    entries.forEach((element) {
+      logInfo('index ${element.id} ${element.quantity}');
+      newTotal = newTotal + element.price * element.quantity;
+    });
+    logInfo('${newTotal}');
     // calcular el valor total de los elementos en el carro de compras
     total.value = newTotal;
   }
@@ -27,6 +32,10 @@ class ShoppingController extends GetxController {
   agregarProducto(id) {
     logInfo('agregarProducto $id');
     // TODO
+    Product p = entries.firstWhere((element) => id == element.id);
+    int index = entries.indexOf(p);
+    p.quantity = p.quantity + 1;
+    entries[index] = p;
     // Encontrar el elemento usando el id, revisar el método firstWhere de la lista
     // después obtener el index de ese elemento, revisar el método indexOf de la lista
     // después hacer el incremento en la cantidad
@@ -37,8 +46,12 @@ class ShoppingController extends GetxController {
   quitarProducto(id) {
     logInfo('quitarProducto $id');
     // TODO
+    Product p = entries.firstWhere((element) => id == element.id);
+    int index = entries.indexOf(p);
+    p.quantity = (p.quantity - 1) < 0 ? 0 : p.quantity - 1;
+    entries[index] = p;
+    calcularTotal();
     // similar a agregarProducto
     // validar cuando la cantidad es igual a cero
-    calcularTotal();
   }
 }
